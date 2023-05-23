@@ -82,10 +82,12 @@ class HabitDatabase extends ChangeNotifier {
   }
 
   bool getCompletionStatus(DateTime date) {
+    _loadData();
     return dateRecords[selectedHabit]!.contains(date);
   }
 
   void addHabit(String habitName) {
+    _loadData();
     habitList.add(habitName);
     dateRecords[habitName] = [];
     selectedHabit = habitName;
@@ -94,6 +96,7 @@ class HabitDatabase extends ChangeNotifier {
   }
 
   void removeHabit(String habitName) {
+    _loadData();
     habitList.remove(habitName);
     if (selectedHabit == habitName) {
       selectedHabit = habitList[0];
@@ -102,6 +105,7 @@ class HabitDatabase extends ChangeNotifier {
   }
 
   void changeSelectedHabit(String habitName) {
+    _loadData();
     print("Swtiching to $habitName");
     if (habitList.contains(habitName)) {
       selectedHabit = habitName;

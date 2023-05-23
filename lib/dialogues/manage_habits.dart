@@ -14,11 +14,12 @@ class _ManageHabitsState extends State<ManageHabits> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
+      title: Text(
         "Manage Habits",
         textAlign: TextAlign.center,
         style: TextStyle(
           fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.onSecondary,
         ),
       ),
       content: Consumer<HabitDatabase>(
@@ -82,11 +83,14 @@ class HabitTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Container(
         width: 200,
         height: 60,
-        color: Colors.grey[800],
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(5),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(
@@ -96,8 +100,8 @@ class HabitTile extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   habitName,
-                  style:
-                      const TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 17),
                 ),
               ),
               habitCount > 1
@@ -107,7 +111,11 @@ class HabitTile extends StatelessWidget {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: Text(
-                                "Are you sure you want to delete the habbit $habitName? This action is irreversable."),
+                              "Are you sure you want to delete the habbit '$habitName'? This action is irreversable.",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                             actions: [
                               ElevatedButton(
                                 onPressed: () {
@@ -118,7 +126,14 @@ class HabitTile extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: const Text("No"),
+                                child: Text(
+                                  "No",
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary,
+                                  ),
+                                ),
                               )
                             ],
                           ),

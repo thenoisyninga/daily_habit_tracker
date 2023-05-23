@@ -22,11 +22,11 @@ class _HabitCalendarState extends State<HabitCalendar> {
           },
           size: 39,
           initDate: value.getSelectedDate(),
+          defaultColor: Theme.of(context).colorScheme.surface,
           colorMode: ColorMode.color,
-          textColor: Colors.black,
+          textColor: Theme.of(context).colorScheme.onSurface,
           showColorTip: false,
           fontSize: 12,
-          weekTextColor: Colors.grey[200],
           datasets: value.getHabitDataset(),
           onClick: (p0) {
             setState(() {

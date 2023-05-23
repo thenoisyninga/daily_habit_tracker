@@ -17,16 +17,24 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    var _habitDatabase = Hive.box("HABIT_DATABASE");
-    if (_habitDatabase.get("HABIT_LIST") == null) {}
+    var habitDatabase = Hive.box("HABIT_DATABASE");
+    if (habitDatabase.get("HABIT_LIST") == null) {}
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Text("Daily Habit Tracker"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: SizedBox(
+          height: 40,
+          child: Theme.of(context).colorScheme.brightness == Brightness.light
+              ? Image.asset("assets/images/title/TitleBlack.png", color: Colors.grey[900],)
+              : Image.asset("assets/images/title/TitleWhite.png", color: Colors.grey[200],),
+        ),
         centerTitle: true,
       ),
       body: Consumer<HabitDatabase>(
@@ -52,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                     height: MediaQuery.of(context).size.height * 0.3,
                     width: MediaQuery.of(context).size.width - (2 * 15),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 20, 20, 20),
+                      color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Column(
@@ -66,8 +74,9 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Text(
                               "${selectedDate.day} ${getMonthFromNum(selectedDate.month)} 2023",
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
                                 fontSize: 35,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -85,9 +94,15 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               "Completed",
                               style: TextStyle(
-                                  fontSize: 17, color: Colors.grey[400]),
+                                fontSize: 17,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondary
+                                    .withAlpha(180),
+                              ),
                             ),
                             Switch(
+                              activeColor: Colors.green,
                               value: (selectedDate.isAfter(DateTime.now()))
                                   ? false
                                   : value.getCompletionStatus(selectedDate),

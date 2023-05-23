@@ -20,8 +20,7 @@ class _HabitSelectorState extends State<HabitSelector> {
           height: 70,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(90),
-            color: const Color.fromARGB(255, 20, 20, 20),
-            // color: const Color.fromARGB(255, 20, 20, 20),
+            color: Theme.of(context).colorScheme.secondary,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
