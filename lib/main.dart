@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Color? primaryColor = Colors.green;
+    Color? primaryColor = Colors.green[600];
     Color? scaffoldBackgroundColor = Colors.grey[900];
     return ChangeNotifierProvider(
       create: (BuildContext context) => HabitDatabase(),
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.grey[900],
           colorScheme: ColorScheme(
             brightness: Brightness.dark,
-            primary: primaryColor,
+            primary: primaryColor!,
             onPrimary: Colors.white,
             secondary: primaryColor.withAlpha(190),
             onSecondary: Colors.white,

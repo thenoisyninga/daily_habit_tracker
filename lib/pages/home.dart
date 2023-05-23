@@ -1,5 +1,6 @@
 import 'package:daily_habit_tracker/db_ops/habit_database.dart';
 import 'package:daily_habit_tracker/helper/date_parse.dart';
+import 'package:daily_habit_tracker/widgets/habit_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -43,47 +44,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // Habit Selector
-                Container(
-                  alignment: Alignment.center,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(90),
-                    color: const Color.fromARGB(255, 20, 20, 20),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Choose Habit
-                          DropdownButton(
-                            padding: const EdgeInsets.all(8),
-                            value: value.selectedHabit,
-                            items: List.generate(
-                              value.habitList.length,
-                              (index) {
-                                String habitName = value.habitList[index];
-                                return DropdownMenuItem(
-                                  value: habitName,
-                                  child: Text(habitName),
-                                );
-                              },
-                            ),
-                            onChanged: (x) {},
-                          ),
-
-                          // Add Habit Button
-                          IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                const HabitSelector(),
 
                 // Heatmap Calendar
                 HeatMapCalendar(
@@ -113,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Container(
-                    height: 240,
+                    height: MediaQuery.of(context).size.height * 0.3,
                     width: MediaQuery.of(context).size.width - (2 * 15),
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 20, 20, 20),

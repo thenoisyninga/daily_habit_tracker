@@ -29,11 +29,12 @@ class HabitDatabase extends ChangeNotifier {
     _habitDatabase.put("SELECTED_HABIT", selectedHabit);
     _habitDatabase.put("HABIT_LIST", habitList);
 
+    List<String> habitDatesinString = [];
+
     for (int i = 0; i < habitList.length; i++) {
       // for each recorded habit, create a dates list as string
       String habitName = habitList[i];
-      List<String> habitDatesinString =
-          dateRecords[habitName]!.map((DateTime date) {
+      habitDatesinString = dateRecords[habitName]!.map((DateTime date) {
         return date.toString().substring(0, 10);
       }).toList();
 
@@ -66,7 +67,6 @@ class HabitDatabase extends ChangeNotifier {
   }
 
   void toggleHabit(DateTime date) {
-
     if (dateRecords[selectedHabit]!.contains(date)) {
       dateRecords[selectedHabit]!.remove(date);
     } else {
@@ -78,5 +78,30 @@ class HabitDatabase extends ChangeNotifier {
 
   bool getCompletionStatus(DateTime date) {
     return dateRecords[selectedHabit]!.contains(date);
+  }
+
+  void addHabit(String habitName) {
+    habitList.add(habitName);
+    dateRecords[habitName] = [];
+    selectedHabit = habitName;
+    _saveData();
+    notifyListeners();
+  }
+
+  void removeHabit(String habitName) {
+    habitList.remove(habitName);
+    if (selectedHabit == habitName) {
+      selectedHabit = habitList[0];
+    }
+    notifyListeners();
+  }
+
+  void changeSelectedHabit(String habitName) {
+    print("Swtiching to $habitName");
+    if (habitList.contains(habitName)) {
+      selectedHabit = habitName;
+      _saveData();
+      notifyListeners();
+    }
   }
 }
