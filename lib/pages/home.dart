@@ -1,5 +1,6 @@
 import 'package:daily_habit_tracker/db_ops/habit_database.dart';
 import 'package:daily_habit_tracker/helper/date_parse.dart';
+import 'package:daily_habit_tracker/widgets/habit_calendar.dart';
 import 'package:daily_habit_tracker/widgets/habit_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
@@ -14,12 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  DateTime selectedDate = DateTime(
-    DateTime.now().year,
-    DateTime.now().month,
-    DateTime.now().day,
-  );
-
   @override
   void initState() {
     var _habitDatabase = Hive.box("HABIT_DATABASE");
@@ -36,6 +31,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Consumer<HabitDatabase>(
         builder: (BuildContext context, value, Widget? child) {
+          DateTime selectedDate = value.getSelectedDate();
           return Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 15.0,
@@ -46,29 +42,8 @@ class _HomePageState extends State<HomePage> {
                 // Habit Selector
                 const HabitSelector(),
 
-                // Heatmap Calendar
-                HeatMapCalendar(
-                  colorsets: const {
-                    0: Colors.transparent,
-                    1: Colors.green,
-                  },
-                  initDate: selectedDate,
-                  colorMode: ColorMode.color,
-                  textColor: Colors.black,
-                  showColorTip: false,
-                  fontSize: 12,
-                  weekTextColor: Colors.grey[200],
-                  datasets: value.getHabitDataset(),
-                  onClick: (p0) {
-                    setState(() {
-                      selectedDate = DateTime(
-                        p0.year,
-                        p0.month,
-                        p0.day,
-                      );
-                    });
-                  },
-                ),
+                // Habit Calendar
+                const HabitCalendar(),
 
                 // Completion Checker for chosen date
                 Padding(

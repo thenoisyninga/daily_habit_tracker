@@ -7,6 +7,11 @@ class HabitDatabase extends ChangeNotifier {
   String? selectedHabit;
   List<String> habitList = [];
   Map<String, List<DateTime>> dateRecords = {};
+  DateTime _selectedDate = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
 
   void _loadData() {
     selectedHabit = _habitDatabase.get("SELECTED_HABIT");
@@ -103,5 +108,14 @@ class HabitDatabase extends ChangeNotifier {
       _saveData();
       notifyListeners();
     }
+  }
+
+  void setSelectedDate(DateTime date) {
+    _selectedDate = date;
+    notifyListeners();
+  }
+
+  DateTime getSelectedDate() {
+    return _selectedDate;
   }
 }
