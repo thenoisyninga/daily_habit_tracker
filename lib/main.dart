@@ -1,6 +1,7 @@
 
 import 'package:daily_habit_tracker/db_ops/habit_database.dart';
 import 'package:daily_habit_tracker/pages/home.dart';
+import 'package:daily_habit_tracker/pages/splash.dart';
 import 'package:daily_habit_tracker/theme/dark_theme.dart';
 import 'package:daily_habit_tracker/theme/light_theme.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         title: 'Daily Habit Tracker',
         theme: myLightTheme,
         darkTheme: myDarkTheme,
-        home: const HomePage(),
+        home: const SplashScreen(),
       ),
     );
   }
