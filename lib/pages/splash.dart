@@ -1,5 +1,6 @@
-import 'package:daily_habit_tracker/pages/home.dart';
 import 'package:flutter/material.dart';
+
+import 'home.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,74 +13,127 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController _controller1;
   late AnimationController _controller2;
-  late Animation<double> _borderRadiusOuterAnimation;
-  late Animation<double> _borderRadiusInnerAnimation;
+  late AnimationController _controller3;
+  late Animation<double> _borderRadiusOuterInitialAnimation;
+  late Animation<double> _borderRadiusOuterFinalAnimation;
+  late Animation<double> _borderRadiusInnerInitialAnimation;
+  late Animation<double> _borderRadiusInnerFinalAnimation;
   late Animation<double> _scaleInnerAnimation;
+
+  double _borderRadiusInside = 0;
+  double _borderRadiusOutside = 0;
 
   @override
   void initState() {
     super.initState();
 
-    // initialize controller
+    // initialize controller for circle/square switch
     _controller1 = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 700),
+    );
+
+    // initialize controller for make into logo
+    _controller2 = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+
+    // initialize controller for collapse on itself
+    _controller3 = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 125),
     );
 
     Future.delayed(const Duration(milliseconds: 500), () {
+      _borderRadiusInside = _borderRadiusInnerInitialAnimation.value;
+      _borderRadiusOutside = _borderRadiusOuterInitialAnimation.value;
       _controller1.forward();
     });
 
-    _controller2 = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 250),
-    );
-
-    // border radius animation
-    _borderRadiusOuterAnimation =
-        Tween(begin: 10.0, end: 100.0).animate(CurvedAnimation(
-      parent: _controller1,
-      curve: Curves.easeInOut,
-      // reverseCurve: Curves.easeIn,
-    ));
-
-    _borderRadiusInnerAnimation =
-        Tween(begin: 5.0, end: 100.0).animate(CurvedAnimation(
+    // animations for circle to sqaure switch
+    _borderRadiusOuterInitialAnimation =
+        Tween(begin: 0.0, end: 100.0).animate(CurvedAnimation(
       parent: _controller1,
       curve: Curves.easeInOut,
     ));
 
-    _scaleInnerAnimation = Tween(begin: 30.0, end: -20.0)
-        .animate(CurvedAnimation(parent: _controller2, curve: Curves.easeIn));
+    _borderRadiusInnerInitialAnimation =
+        Tween(begin: 0.0, end: 100.0).animate(CurvedAnimation(
+      parent: _controller1,
+      curve: Curves.easeInOut,
+    ));
 
+    // animations for square to logo switch
+    _borderRadiusOuterFinalAnimation =
+        Tween(begin: 100.0, end: 10.0).animate(CurvedAnimation(
+      parent: _controller2,
+      curve: Curves.easeInOut,
+    ));
+
+    _borderRadiusInnerFinalAnimation =
+        Tween(begin: 100.0, end: 5.0).animate(CurvedAnimation(
+      parent: _controller2,
+      curve: Curves.easeInOut,
+    ));
+
+    // Animation for collapse on itself
+    _scaleInnerAnimation =
+        Tween(begin: 20.0, end: -10.0).animate(CurvedAnimation(
+      parent: _controller3,
+      curve: Curves.easeIn,
+    ));
+
+    // listeners to update values according to animation stage
     _controller1.addListener(() {
-      setState(() {});
+      setState(() {
+        _borderRadiusInside = _borderRadiusInnerInitialAnimation.value;
+        _borderRadiusOutside = _borderRadiusOuterInitialAnimation.value;
+      });
     });
 
     _controller2.addListener(() {
+      setState(() {
+        _borderRadiusInside = _borderRadiusInnerFinalAnimation.value;
+        _borderRadiusOutside = _borderRadiusOuterFinalAnimation.value;
+      });
+    });
+
+    _controller3.addListener(() {
       setState(() {});
     });
 
     int count = 0;
 
+    // inital animation (circle/square switch) loops 2 times then initiates 2nd animation (controller 2)
     _controller1.addStatusListener((status) {
       if (count <= 1) {
         if (status == AnimationStatus.completed) {
-          count++;
-          Future.delayed(Duration(milliseconds: count == 2 ? 1000 : 0), () {
-            _controller1.reverse();
-          });
+          _controller1.reverse();
         } else if (status == AnimationStatus.dismissed) {
-          _controller1.forward();
+          count++;
+          Future.delayed(const Duration(milliseconds: 0), () {
+            _controller1.forward();
+          });
         }
       } else {
-        Future.delayed(const Duration(seconds: 0), () {
+        Future.delayed(const Duration(milliseconds: 250), () {
           _controller2.forward();
         });
       }
     });
 
+    // controller 2 checks if square to logo animation is complete,
+    // then waits a second before starting collapse on itself
     _controller2.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Future.delayed(const Duration(seconds: 3), () {
+          _controller3.forward();
+        });
+      }
+    });
+
+    _controller3.addStatusListener((status) {
       Future.delayed(const Duration(milliseconds: 100), () {
         if (status == AnimationStatus.completed) {
           Navigator.pushReplacement(
@@ -103,12 +157,11 @@ class _SplashScreenState extends State<SplashScreen>
             alignment: Alignment.center,
             children: [
               Container(
-                height: _scaleInnerAnimation.value + 20,
-                width: _scaleInnerAnimation.value + 20,
+                height: _scaleInnerAnimation.value + 10,
+                width: _scaleInnerAnimation.value + 10,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:
-                      BorderRadius.circular(_borderRadiusOuterAnimation.value),
+                  color: Theme.of(context).colorScheme.onBackground,
+                  borderRadius: BorderRadius.circular(_borderRadiusOutside),
                 ),
               ),
               Container(
@@ -120,8 +173,7 @@ class _SplashScreenState extends State<SplashScreen>
                     : _scaleInnerAnimation.value,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background,
-                  borderRadius:
-                      BorderRadius.circular(_borderRadiusInnerAnimation.value),
+                  borderRadius: BorderRadius.circular(_borderRadiusInside),
                 ),
               ),
             ],

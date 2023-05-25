@@ -106,7 +106,6 @@ class HabitDatabase extends ChangeNotifier {
 
   void changeSelectedHabit(String habitName) {
     _loadData();
-    print("Swtiching to $habitName");
     if (habitList.contains(habitName)) {
       selectedHabit = habitName;
       _saveData();

@@ -2,6 +2,7 @@ import 'package:daily_habit_tracker/db_ops/habit_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class AddHabit extends StatefulWidget {
   AddHabit({super.key});
 

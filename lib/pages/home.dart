@@ -3,7 +3,6 @@ import 'package:daily_habit_tracker/helper/date_parse.dart';
 import 'package:daily_habit_tracker/widgets/habit_calendar.dart';
 import 'package:daily_habit_tracker/widgets/habit_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
