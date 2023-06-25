@@ -148,19 +148,23 @@ class HabitDatabase extends ChangeNotifier {
       double daysCompletedInWeek = 0;
       for (int j = 0; j < dateRecords[selectedHabit]!.length; j++) {
         DateTime currentDate = dateRecords[selectedHabit]![j];
-        if (currentDate.isBefore(weekLowerBound) ||
-            currentDate.isAfter(weekUpperBound) ||
+        if ((currentDate.isBefore(weekLowerBound) &&
+                currentDate.isAfter(weekUpperBound)) ||
             currentDate.isAtSameMomentAs(weekUpperBound)) {
           daysCompletedInWeek++;
         }
       }
-      double completionRate = daysCompletedInWeek / targetCompletionsPerWeek;
-      completionRateSum += completionRate;
 
-      weekLowerBound = weekLowerBound.subtract(const Duration(days: 1));
-      weekUpperBound = weekUpperBound.subtract(const Duration(days: 1));
+      double completionRateCurrentWeek =
+          daysCompletedInWeek / targetCompletionsPerWeek;
+
+      completionRateSum += completionRateCurrentWeek;
+
+      weekLowerBound = weekLowerBound.subtract(const Duration(days: 7));
+      weekUpperBound = weekUpperBound.subtract(const Duration(days: 7));
     }
 
+    print(completionRateSum / weeks);
     return completionRateSum / weeks;
   }
 
