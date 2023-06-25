@@ -13,6 +13,8 @@ class HabitDatabase extends ChangeNotifier {
     DateTime.now().day,
   );
 
+  int targetCompletionsPerWeek = 5;
+
   void _loadData() {
     selectedHabit = _habitDatabase.get("SELECTED_HABIT");
     habitList = _habitDatabase.get("HABIT_LIST") ?? [];
@@ -120,5 +122,72 @@ class HabitDatabase extends ChangeNotifier {
 
   DateTime getSelectedDate() {
     return _selectedDate;
+  }
+
+  double getCompletionPercentage(int weeks) {
+    _loadData();
+
+    // get last monday's date
+    DateTime weekLowerBound = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+
+    while (weekLowerBound.weekday != DateTime.monday) {
+      weekLowerBound.subtract(const Duration(days: 1));
+    }
+
+    DateTime weekUpperBound = weekLowerBound.subtract(const Duration(days: 7));
+
+    // getting completion rate for each week and summing them
+    double completionRateSum = 0;
+
+    for (int i = 0; i < weeks; i++) {
+      // calculate completion rate for each week
+      double daysCompletedInWeek = 0;
+      for (int j = 0; j < dateRecords[selectedHabit]!.length; j++) {
+        DateTime currentDate = dateRecords[selectedHabit]![j];
+        if (currentDate.isBefore(weekLowerBound) ||
+            currentDate.isAfter(weekUpperBound) ||
+            currentDate.isAtSameMomentAs(weekUpperBound)) {
+          daysCompletedInWeek++;
+        }
+      }
+      double completionRate = daysCompletedInWeek / targetCompletionsPerWeek;
+      completionRateSum += completionRate;
+
+      weekLowerBound = weekLowerBound.subtract(const Duration(days: 1));
+      weekUpperBound = weekUpperBound.subtract(const Duration(days: 1));
+    }
+
+    return completionRateSum / weeks;
+  }
+
+  int getCompletionsInCurrentWeek() {
+    _loadData();
+
+    // get last monday's date
+    DateTime weekStart = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+
+    while (weekStart.weekday != DateTime.monday) {
+      weekStart.subtract(const Duration(days: 1));
+    }
+
+    int daysCompletedInThisWeek = 0;
+
+    for (int j = 0; j < dateRecords[selectedHabit]!.length; j++) {
+      DateTime currentDate = dateRecords[selectedHabit]![j];
+      if (currentDate.isAfter(weekStart) ||
+          currentDate.isAtSameMomentAs(weekStart)) {
+        daysCompletedInThisWeek++;
+      }
+    }
+
+    return daysCompletedInThisWeek;
   }
 }

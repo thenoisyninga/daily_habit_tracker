@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen>
     // initialize controller for circle/square switch
     _controller1 = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 700),
+      duration: const Duration(milliseconds: 500),
     );
 
     // initialize controller for make into logo
@@ -55,31 +55,35 @@ class _SplashScreenState extends State<SplashScreen>
     _borderRadiusOuterInitialAnimation =
         Tween(begin: 0.0, end: 100.0).animate(CurvedAnimation(
       parent: _controller1,
-      curve: Curves.easeInOut,
+      curve: Curves.easeIn,
+      reverseCurve: Curves.easeOut,
     ));
 
     _borderRadiusInnerInitialAnimation =
         Tween(begin: 0.0, end: 100.0).animate(CurvedAnimation(
       parent: _controller1,
-      curve: Curves.easeInOut,
+      curve: Curves.easeIn,
+      reverseCurve: Curves.easeOut,
     ));
 
     // animations for square to logo switch
     _borderRadiusOuterFinalAnimation =
         Tween(begin: 100.0, end: 10.0).animate(CurvedAnimation(
       parent: _controller2,
-      curve: Curves.easeInOut,
+      curve: Curves.easeIn,
+      reverseCurve: Curves.easeOut,
     ));
 
     _borderRadiusInnerFinalAnimation =
         Tween(begin: 100.0, end: 5.0).animate(CurvedAnimation(
       parent: _controller2,
-      curve: Curves.easeInOut,
+      curve: Curves.easeIn,
+      reverseCurve: Curves.easeOut,
     ));
 
     // Animation for collapse on itself
     _scaleInnerAnimation =
-        Tween(begin: 20.0, end: -10.0).animate(CurvedAnimation(
+        Tween(begin: 30.0, end: -10.0).animate(CurvedAnimation(
       parent: _controller3,
       curve: Curves.easeIn,
     ));
@@ -107,14 +111,12 @@ class _SplashScreenState extends State<SplashScreen>
 
     // inital animation (circle/square switch) loops 2 times then initiates 2nd animation (controller 2)
     _controller1.addStatusListener((status) {
-      if (count <= 1) {
+      if (count == 0) {
         if (status == AnimationStatus.completed) {
           _controller1.reverse();
         } else if (status == AnimationStatus.dismissed) {
           count++;
-          Future.delayed(const Duration(milliseconds: 0), () {
-            _controller1.forward();
-          });
+          _controller1.forward();
         }
       } else {
         Future.delayed(const Duration(milliseconds: 250), () {
@@ -157,8 +159,8 @@ class _SplashScreenState extends State<SplashScreen>
             alignment: Alignment.center,
             children: [
               Container(
-                height: _scaleInnerAnimation.value + 10,
-                width: _scaleInnerAnimation.value + 10,
+                height: _scaleInnerAnimation.value + 20,
+                width: _scaleInnerAnimation.value + 20,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onBackground,
                   borderRadius: BorderRadius.circular(_borderRadiusOutside),

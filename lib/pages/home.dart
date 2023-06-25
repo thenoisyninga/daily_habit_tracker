@@ -31,8 +31,14 @@ class _HomePageState extends State<HomePage> {
         title: SizedBox(
           height: 40,
           child: Theme.of(context).colorScheme.brightness == Brightness.light
-              ? Image.asset("assets/images/title/TitleBlack.png", color: Colors.grey[900],)
-              : Image.asset("assets/images/title/TitleWhite.png", color: Colors.grey[200],),
+              ? Image.asset(
+                  "assets/images/title/TitleBlack.png",
+                  color: Colors.grey[900],
+                )
+              : Image.asset(
+                  "assets/images/title/TitleWhite.png",
+                  color: Colors.grey[200],
+                ),
         ),
         centerTitle: true,
       ),
@@ -49,6 +55,63 @@ class _HomePageState extends State<HomePage> {
                 // Habit Selector
                 const HabitSelector(),
 
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.5),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Text("Previous 8 Weeks"),
+                            SizedBox(
+                              width: 100,
+                              height: 7,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(90),
+                                child: LinearProgressIndicator(
+                                  backgroundColor: Colors.white,
+                                  color: Colors.green,
+                                  value: value.getCompletionPercentage(8),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Text("This Week"),
+                            SizedBox(
+                              width: 100,
+                              height: 7,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(90),
+                                child: LinearProgressIndicator(
+                                  backgroundColor: Colors.white,
+                                  color: Colors.green,
+                                  value: value.getCompletionsInCurrentWeek() /
+                                      value.targetCompletionsPerWeek,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
                 // Habit Calendar
                 const HabitCalendar(),
 
@@ -56,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.25,
                     width: MediaQuery.of(context).size.width - (2 * 15),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.secondary,
