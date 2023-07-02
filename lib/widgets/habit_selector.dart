@@ -56,7 +56,6 @@ class _HabitSelectorState extends State<HabitSelector> {
                       onChanged: (selectedHabit) {
                         if (selectedHabit != null) {
                           setState(() {
-                            print(value.getCompletionPercentage(8));
                             value.changeSelectedHabit(selectedHabit);
                           });
                         }

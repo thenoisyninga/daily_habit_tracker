@@ -125,6 +125,7 @@ class HabitDatabase extends ChangeNotifier {
   }
 
   double getCompletionPercentage(int weeks) {
+    print("Getting completion percentage.");
     _loadData();
 
     // get last monday's date
@@ -135,7 +136,9 @@ class HabitDatabase extends ChangeNotifier {
     );
 
     while (weekLowerBound.weekday != DateTime.monday) {
-      weekLowerBound.subtract(const Duration(days: 1));
+      print("Going back to get week start");
+      weekLowerBound = weekLowerBound.subtract(const Duration(days: 1));
+      print(weekLowerBound);
     }
 
     DateTime weekUpperBound = weekLowerBound.subtract(const Duration(days: 7));
@@ -164,11 +167,11 @@ class HabitDatabase extends ChangeNotifier {
       weekUpperBound = weekUpperBound.subtract(const Duration(days: 7));
     }
 
-    print(completionRateSum / weeks);
     return completionRateSum / weeks;
   }
 
   int getCompletionsInCurrentWeek() {
+    print("Getting completion in current week");
     _loadData();
 
     // get last monday's date
@@ -179,7 +182,7 @@ class HabitDatabase extends ChangeNotifier {
     );
 
     while (weekStart.weekday != DateTime.monday) {
-      weekStart.subtract(const Duration(days: 1));
+      weekStart = weekStart.subtract(const Duration(days: 1));
     }
 
     int daysCompletedInThisWeek = 0;

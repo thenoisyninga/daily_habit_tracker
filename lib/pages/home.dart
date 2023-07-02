@@ -55,25 +55,26 @@ class _HomePageState extends State<HomePage> {
                 // Habit Selector
                 const HabitSelector(),
 
+                // Habit Calendar
+                const HabitCalendar(),
+
+                // Consistency Overview
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   child: Container(
+                    alignment: Alignment.center,
                     height: 60,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withOpacity(0.5),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            const Text("Previous 8 Weeks"),
                             SizedBox(
                               width: 100,
                               height: 7,
@@ -86,12 +87,12 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
+                            const Text("Previous 8 Weeks"),
                           ],
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            const Text("This Week"),
                             SizedBox(
                               width: 100,
                               height: 7,
@@ -105,6 +106,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
+                            const Text("This Week"),
                           ],
                         ),
                       ],
@@ -112,72 +114,65 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                // Habit Calendar
-                const HabitCalendar(),
-
                 // Completion Checker for chosen date
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.25,
-                    width: MediaQuery.of(context).size.width - (2 * 15),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Selected Date
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              "${selectedDate.day} ${getMonthFromNum(selectedDate.month)} 2023",
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
-                                fontSize: 35,
-                                fontWeight: FontWeight.w500,
-                              ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: MediaQuery.of(context).size.width - (2 * 15),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Selected Date
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "${selectedDate.day} ${getMonthFromNum(selectedDate.month)}, 2023",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSecondary,
+                              fontSize: 35,
+                              fontWeight: FontWeight.w500,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
 
-                        const SizedBox(height: 10),
+                      const SizedBox(height: 10),
 
-                        // Completion Toggle
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              "Completed",
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondary
-                                    .withAlpha(180),
-                              ),
+                      // Completion Toggle
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "Completed",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondary
+                                  .withAlpha(180),
                             ),
-                            Switch(
-                              activeColor: Colors.green,
-                              value: (selectedDate.isAfter(DateTime.now()))
-                                  ? false
-                                  : value.getCompletionStatus(selectedDate),
-                              onChanged: selectedDate.isAfter(DateTime.now())
-                                  ? null
-                                  : (x) {
-                                      value.toggleHabit(selectedDate);
-                                    },
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                          ),
+                          Switch(
+                            activeColor: Colors.green,
+                            value: (selectedDate.isAfter(DateTime.now()))
+                                ? false
+                                : value.getCompletionStatus(selectedDate),
+                            onChanged: selectedDate.isAfter(DateTime.now())
+                                ? null
+                                : (x) {
+                                    value.toggleHabit(selectedDate);
+                                  },
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ],
