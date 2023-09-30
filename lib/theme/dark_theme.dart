@@ -4,15 +4,15 @@ ThemeData myDarkTheme = ThemeData(
   brightness: Brightness.dark,
   colorScheme: ColorScheme.dark(
     background: Colors.black,
-    secondary: const Color.fromARGB(255, 28, 28, 28),
+    secondary: const Color.fromARGB(255, 21, 21, 21),
     surface: const Color.fromARGB(255, 36, 36, 36),
-    primary: const Color.fromARGB(255, 31, 31, 31),
+    primary: const Color.fromARGB(255, 21, 21, 21),
     onBackground: Colors.white,
     onPrimary: Colors.white,
     onSecondary: Colors.grey[200]!,
     onSurface: Colors.white,
   ),
-  dialogBackgroundColor: Colors.black,
+  dialogBackgroundColor: Color.fromARGB(255, 33, 33, 33),
   dialogTheme: DialogTheme(
     titleTextStyle: TextStyle(
       fontWeight: FontWeight.w300,

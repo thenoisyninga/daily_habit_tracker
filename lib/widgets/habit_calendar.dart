@@ -21,6 +21,10 @@ class _HabitCalendarState extends State<HabitCalendar> {
             1: Colors.green,
           },
           size: 39,
+          borderRadius: 100,
+          onMonthChange: (date) {
+            value.setSelectedDate(date);
+          },
           initDate: value.getSelectedDate(),
           defaultColor: Theme.of(context).colorScheme.surface,
           colorMode: ColorMode.color,

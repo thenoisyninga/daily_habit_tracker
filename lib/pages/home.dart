@@ -1,4 +1,5 @@
 import 'package:daily_habit_tracker/db_ops/habit_database.dart';
+import 'package:daily_habit_tracker/dialogues/range_selector.dart';
 import 'package:daily_habit_tracker/helper/date_parse.dart';
 import 'package:daily_habit_tracker/widgets/habit_calendar.dart';
 import 'package:daily_habit_tracker/widgets/habit_selector.dart';
@@ -59,60 +60,87 @@ class _HomePageState extends State<HomePage> {
                 const HabitCalendar(),
 
                 // Consistency Overview
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                Stack(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                height: 7,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(90),
+                                  child: LinearProgressIndicator(
+                                    backgroundColor: Colors.white,
+                                    color: Colors.green,
+                                    value: value.getCompletionPercentage(),
+                                  ),
+                                ),
+                              ),
+                              Text("Previous ${value.progressPercDispMode}"),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                height: 7,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(90),
+                                  child: LinearProgressIndicator(
+                                    backgroundColor: Colors.white,
+                                    color: Colors.green,
+                                    value: value.getCompletionsInCurrentWeek() /
+                                        value.targetCompletionsPerWeek,
+                                  ),
+                                ),
+                              ),
+                              const Text("This Week"),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
+                  ),
+                  Container(
+                    height: 60,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              height: 7,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(90),
-                                child: LinearProgressIndicator(
-                                  backgroundColor: Colors.white,
-                                  color: Colors.green,
-                                  value: value.getCompletionPercentage(8),
-                                ),
-                              ),
+                        // The part covering the progress indicator on the left
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => const RangeSelector());
+                            },
+                            child: Container(
+                              color: Colors.transparent,
                             ),
-                            const Text("Previous 8 Weeks"),
-                          ],
+                          ),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              height: 7,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(90),
-                                child: LinearProgressIndicator(
-                                  backgroundColor: Colors.white,
-                                  color: Colors.green,
-                                  value: value.getCompletionsInCurrentWeek() /
-                                      value.targetCompletionsPerWeek,
-                                ),
-                              ),
-                            ),
-                            const Text("This Week"),
-                          ],
+
+                        // The part covering the progress indicator on the right
+                        Expanded(
+                          child: Container(),
                         ),
                       ],
                     ),
                   ),
-                ),
+                ]),
 
                 // Completion Checker for chosen date
                 Container(

@@ -13,11 +13,23 @@ class HabitDatabase extends ChangeNotifier {
     DateTime.now().day,
   );
 
+  String progressPercDispMode = "2 Months";
+
+  Map<String, int> progressPercDispModes = {
+    "2 Weeks": 2,
+    "4 Weeks": 4,
+    "2 Months": 60 ~/ 7,
+    "6 Months": (365 / 2) ~/ 7,
+    "1 Year": 365 ~/ 7,
+  };
+
   int targetCompletionsPerWeek = 5;
 
   void _loadData() {
     selectedHabit = _habitDatabase.get("SELECTED_HABIT");
     habitList = _habitDatabase.get("HABIT_LIST") ?? [];
+    progressPercDispMode =
+        _habitDatabase.get("PROGRSS_PERC_DISPLAY_MODE") ?? "2 Months";
 
     for (int i = 0; i < habitList.length; i++) {
       // for each recorded habit, get the dates list
@@ -35,6 +47,7 @@ class HabitDatabase extends ChangeNotifier {
   void _saveData() {
     _habitDatabase.put("SELECTED_HABIT", selectedHabit);
     _habitDatabase.put("HABIT_LIST", habitList);
+    _habitDatabase.put("PROGRSS_PERC_DISPLAY_MODE", progressPercDispMode);
 
     List<String> habitDatesinString = [];
 
@@ -52,6 +65,7 @@ class HabitDatabase extends ChangeNotifier {
 
   void createDefaultData() {
     habitList = ["Workout"];
+    progressPercDispMode = "2 Months";
     selectedHabit = habitList[0];
     DateTime now = DateTime.now();
     dateRecords = {
@@ -124,9 +138,10 @@ class HabitDatabase extends ChangeNotifier {
     return _selectedDate;
   }
 
-  double getCompletionPercentage(int weeks) {
-    print("Getting completion percentage.");
+  double getCompletionPercentage() {
     _loadData();
+
+    int weeks = progressPercDispModes[progressPercDispMode] ?? 60 ~/ 7;
 
     // get last monday's date
     DateTime weekLowerBound = DateTime(
@@ -136,9 +151,7 @@ class HabitDatabase extends ChangeNotifier {
     );
 
     while (weekLowerBound.weekday != DateTime.monday) {
-      print("Going back to get week start");
       weekLowerBound = weekLowerBound.subtract(const Duration(days: 1));
-      print(weekLowerBound);
     }
 
     DateTime weekUpperBound = weekLowerBound.subtract(const Duration(days: 7));
@@ -171,7 +184,6 @@ class HabitDatabase extends ChangeNotifier {
   }
 
   int getCompletionsInCurrentWeek() {
-    print("Getting completion in current week");
     _loadData();
 
     // get last monday's date
@@ -196,5 +208,15 @@ class HabitDatabase extends ChangeNotifier {
     }
 
     return daysCompletedInThisWeek;
+  }
+
+  void setProgressPercDispMode(String newMode) {
+    progressPercDispMode = newMode;
+    _saveData();
+    notifyListeners();
+  }
+
+  List<String> getProgressPercModesList() {
+    return progressPercDispModes.keys.toList();
   }
 }
